@@ -1,0 +1,3 @@
+const migrate = async () => {};
+
+migrate();
