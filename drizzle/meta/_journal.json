@@ -8,6 +8,13 @@
       "when": 1728402948642,
       "tag": "0000_small_susan_delgado",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1728464392728,
+      "tag": "0001_funny_moon_knight",
+      "breakpoints": true
     }
   ]
 }

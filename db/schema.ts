@@ -12,7 +12,7 @@ import {
 export const userRoleEnum = pgEnum("role", ["admin", "user"]);
 
 export const users = pgTable("users", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   name: text().notNull(),
   email: text().notNull().unique(),
   role: userRoleEnum().notNull().default("user"),
@@ -20,22 +20,22 @@ export const users = pgTable("users", {
 
   plan_id: uuid()
     .notNull()
-    .references(() => plan.id),
+    .references(() => plans.id),
 
   created_at: timestamp().notNull().defaultNow(),
   updated_at: timestamp().notNull().defaultNow(),
 });
 export const usersRelations = relations(users, ({ one, many }) => ({
-  plan: one(plan, {
+  plan: one(plans, {
     fields: [users.plan_id],
-    references: [plan.id],
+    references: [plans.id],
   }),
   tickets: many(userTickets),
   visits: many(userVisits),
 }));
 
 export const userTickets = pgTable("user_tickets", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   usage_count: integer().notNull().default(0),
   expired_at: timestamp().notNull(),
 
@@ -60,13 +60,13 @@ export const userTicketsRelations = relations(userTickets, ({ one }) => ({
   }),
 }));
 
-export const plan = pgTable("plan", {
-  id: uuid().primaryKey(),
+export const plans = pgTable("plans", {
+  id: uuid().defaultRandom().primaryKey(),
   name: text().notNull(),
 });
 
 export const tickts = pgTable("tickts", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   name: text().notNull(),
   usage_limit: integer().notNull().default(0),
   usage_period: integer().notNull().default(0),
@@ -81,21 +81,21 @@ export const userVisits = pgTable("user_visits", {
     .references(() => users.id),
   user_plan_id: uuid()
     .notNull()
-    .references(() => plan.id),
+    .references(() => plans.id),
 });
 export const userVisitsRelations = relations(userVisits, ({ one }) => ({
   user: one(users, {
     fields: [userVisits.user_id],
     references: [users.id],
   }),
-  userPlan: one(plan, {
+  userPlan: one(plans, {
     fields: [userVisits.user_plan_id],
-    references: [plan.id],
+    references: [plans.id],
   }),
 }));
 
 export const meetingRoomsReservations = pgTable("meeting_rooms_reservations", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   attendee_count: integer().notNull(),
   start_at: timestamp().notNull(),
   end_at: timestamp().notNull(),
@@ -119,12 +119,13 @@ export const meetingRoomsReservationsRelations = relations(
 );
 
 export const meetingRooms = pgTable("meeting_rooms", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   name: text().notNull(),
+  description: text().notNull(),
 });
 
 export const notifications = pgTable("notifications", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   title: text().notNull(),
   content: text().notNull(),
 
@@ -143,6 +144,6 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 }));
 
 export const notificationCategories = pgTable("notification_categories", {
-  id: uuid().primaryKey(),
+  id: uuid().defaultRandom().primaryKey(),
   name: text().notNull(),
 });
