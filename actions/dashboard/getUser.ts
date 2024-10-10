@@ -6,7 +6,7 @@ import { getUserId } from "@/utils/test-user";
 import { eq } from "drizzle-orm";
 import { unstable_cache } from "next/cache";
 
-export const getUserData = async () => {
+export const getUser = async () => {
   const userId = getUserId();
 
   const [userData] = await unstable_cache(
